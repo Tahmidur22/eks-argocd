@@ -25,9 +25,12 @@ func contactPage(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "static/contact.html")
 }
 
+func mainPage(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/home", http.StatusFound)
+}
 
 func main() {
-	
+	http.HandleFunc("/", mainPage)
 	http.HandleFunc("/home", homePage)
 	http.HandleFunc("/courses", coursePage)
 	http.HandleFunc("/about", aboutPage)
