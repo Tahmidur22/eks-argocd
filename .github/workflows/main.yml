@@ -56,5 +56,5 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/sample-golang:${{github.run_id}}
+        tags: ${{ secrets.DOCKER_USERNAME }}/sample-golang:${{github.run_id}}
 
