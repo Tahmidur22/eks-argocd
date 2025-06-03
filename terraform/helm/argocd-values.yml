@@ -1,0 +1,37 @@
+server:
+  service:
+    type: LoadBalancer  # exposes Argo CD UI externally with a cloud provider LB IP
+  extraArgs:
+    - --insecure  # disables HTTPS verification (useful if no TLS setup)
+  config:
+    url: http://<load-balancer-ip>  # or leave blank to skip URL config
+
+controller:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+dex:
+  enabled: false  # no SSO needed for now
+
+repoServer:
+  resources:
+    limits:
+      cpu: 250m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+applicationSet:
+  enabled: true  # if using ApplicationSets CRD
+
+resourceTrackingMethod: "annotation"
+sync:
+  options:
+    - CreateNamespace=true
+    - PruneLast=true
