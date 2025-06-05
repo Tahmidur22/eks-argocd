@@ -14,9 +14,9 @@ grafana:
 
     auth.github:
       enabled: true
-      allow_sign_up: false
-      client_id: $__env{GF_AUTH_GITHUB_CLIENT_ID}
-      client_secret: $__env{GF_AUTH_GITHUB_CLIENT_SECRET}
+      allow_sign_up: true
+      client_id: ${GF_AUTH_GITHUB_CLIENT_ID}
+      client_secret: ${GF_AUTH_GITHUB_CLIENT_SECRET}
       scopes: user:email,read:org
       auth_url: https://github.com/login/oauth/authorize
       token_url: https://github.com/login/oauth/access_token
@@ -37,17 +37,6 @@ grafana:
       service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "3600"
 
 prometheus:
-  prometheusSpec:
-    retention: "15d"
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: gp2
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 50Gi
   service:
     type: ClusterIP
 
