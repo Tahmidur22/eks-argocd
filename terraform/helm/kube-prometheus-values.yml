@@ -1,0 +1,80 @@
+grafana:
+  enabled: true
+
+  envFromSecret: grafana-oauth-secret  # Secret must have GF_AUTH_GITHUB_CLIENT_ID and GF_AUTH_GITHUB_CLIENT_SECRET keys
+
+  grafana.ini:
+    server:
+      # Must match DNS + LoadBalancer HTTPS endpoint
+      root_url: https://grafana.ptm-app.com
+
+    auth:
+      disable_login_form: true
+      oauth_auto_login: true
+
+    auth.github:
+      enabled: true
+      allow_sign_up: false
+      client_id: $__env{GF_AUTH_GITHUB_CLIENT_ID}
+      client_secret: $__env{GF_AUTH_GITHUB_CLIENT_SECRET}
+      scopes: user:email,read:org
+      auth_url: https://github.com/login/oauth/authorize
+      token_url: https://github.com/login/oauth/access_token
+      api_url: https://api.github.com/user
+      team_ids: []
+
+    users:
+      auto_assign_org_role: Viewer
+
+  service:
+    type: LoadBalancer
+    port: 443       # LoadBalancer listens on 443 (HTTPS)
+    targetPort: 3000  # Grafana container listens on 3000 (HTTP)
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:424438299727:certificate/fe5174ee-159a-4827-b1a8-d2f3f106ff64
+      service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "3600"
+
+prometheus:
+  prometheusSpec:
+    retention: "15d"
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: gp2
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 50Gi
+  service:
+    type: ClusterIP
+
+alertmanager:
+  service:
+    type: ClusterIP
+
+kubeApiServer:
+  enabled: true
+
+kubelet:
+  enabled: true
+
+kubeControllerManager:
+  enabled: true
+
+coreDns:
+  enabled: true
+
+kubeEtcd:
+  enabled: true
+
+kubeScheduler:
+  enabled: true
+
+nodeExporter:
+  enabled: true
+
+prometheusOperator:
+  enabled: true

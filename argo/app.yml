@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/Tahmidur22/eks-argocd
     targetRevision: HEAD
-    path: k8s
+    path: k8s/manifests
   destination:
     server: https://kubernetes.default.svc
     namespace: default

@@ -25,3 +25,6 @@ module "vpc" {
 module "argocd" {
   source = "./modules/argocd"
 }
+module "monitoring" {
+  source = "./modules/monitoring"
+}
