@@ -13,7 +13,8 @@ jobs:
     env:
       TF_IN_AUTOMATION: true
       TF_WORKING_DIR: ./terraform
-
+      TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
     - name: Checkout repository
@@ -41,7 +42,5 @@ jobs:
       run: terraform plan
 
     - name: Terraform Apply
+      working-directory: ${{ env.TF_WORKING_DIR }}
       run: terraform apply
-      env:
-        TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
