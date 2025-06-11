@@ -4,7 +4,7 @@ variable "vpc_cidr" {
 }
 
 variable "vpc_name" {
-  type = string
+  type        = string
   description = "The name tag for the VPC"
 }
 
