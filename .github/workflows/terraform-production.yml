@@ -1,5 +1,5 @@
 
-name: Teerraform Prod
+name: Terraform Prod
 on:
   push:
     branches:
@@ -9,6 +9,11 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+
+    env:
+      TF_IN_AUTOMATION: true
+      TF_WORKING_DIR: ./terraform
+
 
     steps:
     - name: Checkout repository
@@ -20,15 +25,19 @@ jobs:
         terraform_version: 1.5.7
     
     - name: Terraform Format
+      working-directory: ${{ env.TF_WORKING_DIR }}
       run: terraform fmt -check
 
     - name: Terraform Init
+      working-directory: ${{ env.TF_WORKING_DIR }}
       run: terraform init
 
     - name: Terraform Validate
+      working-directory: ${{ env.TF_WORKING_DIR }}
       run: terraform validate
 
     - name: Terraform Plan
+      working-directory: ${{ env.TF_WORKING_DIR }}
       run: terraform plan
 
     - name: Terraform Apply
